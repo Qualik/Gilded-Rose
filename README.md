@@ -23,7 +23,6 @@
 - Refactor the code but do not alter the items class or property
 - Add a new feature 'conjured items' for a new category of items to the system
 
-
 ## Things to consider
 
 The idea here is that things lower in quality the more they age which is not correct as different types of items age differently.
