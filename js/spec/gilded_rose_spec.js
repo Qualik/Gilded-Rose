@@ -1,65 +1,150 @@
-describe("Gilded Rose", function() {
+describe("Gilded Rose", function () {
 
-  it("should foo", function() {
-    items = [ new Item("foo", 0, 0) ];
-    update_quality();
-    expect(items[0].name).toEqual("foo");
+  const SellInFieldName = 'sell_in';
+  const qualityFieldName = 'quality';
+  const nameFieldName = 'name';
+
+  describe("Items in the system", () => {
+
+    it("Items have a sellIn value which shows the number of days left to sell the item", () => {
+      const testItem = new Item('+5 Dexterity Vest', 10, 20);
+      const keys = Object.keys(testItem);
+      const sellInValue = testItem[SellInFieldName];
+
+      expect(keys.includes(SellInFieldName)).toBe(true); // key exists
+      expect(typeof sellInValue).toBe('number'); // value is number
+      expect(Number.isInteger(sellInValue)).toBe(true); // value is an integer
+      expect(sellInValue).toBeGreaterThan(-1); // 0 or above. 
+      
+    });
+
+    it("Items have a Quality value which shows how valuable the item is", () => {
+      const testItem = new Item('+5 Dexterity Vest', 10, 20);
+      const keys = Object.keys(testItem);
+      const qualityValue = testItem[qualityFieldName];
+
+      expect(keys.includes(qualityFieldName)).toBe(true); // key exists
+      expect(typeof qualityValue).toBe('number'); // value is number
+      expect(Number.isInteger(qualityValue)).toBe(true); // value is an integer
+      expect(qualityValue).toBeGreaterThan(-1); // 0 or above. 
+      
+    });
   });
 
-  
-describe("sellIn value", () => {
-  it("Items have a sellIn value which shows the number of days left to sell the item", () => {
-    var daysLeft = [0];
-  
-    expect(daysLeft[0].items).toEqual("sellIns value");
-  });
+  describe("The updateQuality Function", () => {
 
-  
+    beforeEach(function () {
+      items.push(new Item('+5 Dexterity Vest', 10, 20));
+      items.push(new Item('Aged Brie', 2, 0));
+      items.push(new Item('Elixir of the Mongoose', 5, 7));
+      items.push(new Item('Sulfuras, Hand of Ragnaros', 0, 80));
+      items.push(new Item('Sulfuras, Hand of Ragnaros', -1, 80));
+      items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20));
+      items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 10, 49));
+      items.push(new Item('Backstage passes to a TAFKAL80ETC concert', 5, 49));
 
-  it("Items have a Quality value which shows how valuable the item is", () => {
-    expect().toEqual("");
-  });
+      // this conjured item does not work properly yet
+      items.push(new Item('Conjured Mana Cake', 3, 6));
 
-  it("End of each day system lowers both values for every item", () => {
-    expect().toEqual("");
-  });
+      // twice decay speed
+      items.push(new Item('twice decay', 0, 4));
 
-  it("Quality degrades twice as fast when sell by date has passed", () => {
-    expect().toEqual("");
-  });
+      // Never less than 0
+      items.push(new Item('sbd_item', 2, 0));
+    });
 
-  it("Quality of an item is never negative", () => {
-    expect().toEqual("");
-  });
+    afterEach(function () {
+      items = [];
+    });
 
-  it("Aged Brie increases in Quality the older it gets", () => {
-    expect().toEqual("");
-  });
+    it("End of each day system lowers both 'sell_in' and 'quality' values for every [ordinary] item", () => {
+      // before
+      const preSellins = [];
+      const preQualities = [];
 
-  it("Quality if an item is never greater than 50", () => {
-    expect().toEqual("");
-  });
+      for (const item of items) {
+        console.log(item);
+        preSellins.push(item[SellInFieldName]);
+        preQualities.push(item[qualityFieldName]);
+      }
+      // call the fn
+      update_quality();
 
-  it("Sulfuras is a legendary item and never has to be sold or decreases in Quality", () => {
-    items = 
-    expect(items).toEqual("");
-  });
+      // after
+      for (const [i, item] of items.entries()) {
+        console.log(item);
 
-  it("Backstge passes increase in Quality as its sellIn value approaches", () => {
-    expect().toEqual("");
-  });
+        expect(item[SellInFieldName]).toEqual(preSellins[i] - 1);
+        expect(item[qualityFieldName]).toEqual(preQualities[i] - 1);
+      }
+    });
 
-  it("Quality increases by 2 when there 10 days or less", () => {
-    expect().toEqual("");
-  });
 
-  it("Quality increases by 3 when there 5 days or less", () => {
-    expect().toEqual("");
-  });
+    it("Quality degrades twice as fast when sell by date has passed", () => {
+      const twiceAgeIndex = items.findIndex(item => item.name === 'twice decay');
+    
+      expect(items[twiceAgeIndex]).toEqual(4);
+      update_quality();
 
-  it("Quality becomes 0 after the concert", () => {
-    expect().toEqual("");
-  });
+      expect(items[twiceAgeIndex]).toEqual(2);
+      update_quality();
 
+      expect(items[twiceAgeIndex]).toEqual(0);
+    });
+
+
+    it("quality of an item is never negative", () => {
+      // 'sbd_item'
+
+      const sbd_itemIndex = items.findIndex(item => item.name === 'sbd_item');
+      expect(items[sbd_itemIndex].quality).toEqual(0);
+      update_quality();
+      expect(items[sbd_itemIndex].quality).toEqual(0);
+    });
+
+
+    it("Aged Brie increases in 'quality' the older it gets", () => {
+      const item = new Item('Aged Brie', 2, 0);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(1);
+    });
+
+
+    it("quality if an item is never greater than 50", () => {
+      const item = new Item("Aged Brie", 3, 50);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(50);
+      // expect().toEqual("");
+    });
+
+
+    it("Sulfuras is a legendary item and never has to be sold or decreases in quality", () => {
+      expect(items).toEqual("");
+    });
+
+
+    it("Backstge passes increase in 'quality' as its sellIn value approaches", () => {
+      expect().toEqual("");
+    });
+
+
+    it("quality increases by 2 when there 10 days or less", () => {
+      expect().toEqual("");
+    });
+
+
+    it("quality increases by 3 when there 5 days or less", () => {
+      expect().toEqual("");
+    });
+
+
+    it("quality becomes 0 after the concert", () => {
+      expect().toEqual("");
+    });
   });
 });
+
+
+
