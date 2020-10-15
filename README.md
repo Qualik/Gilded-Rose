@@ -29,8 +29,6 @@
 The idea here is that things lower in quality the more they age which is not correct as different types of items age differently.
 
 Need to find a way or some sort of dictionary to check the rules for each item so I can conduct a search or look-up and then age the item accordingly when I run updateQuality()
-Every time I do that I have to search all of the arrays
-
 
 ## Guidance Notes
 
