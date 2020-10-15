@@ -111,7 +111,7 @@ describe("Gilded Rose", function() {
     });
 
 
-    it("quality if an item is never greater than 50", () => {
+    it("quality of an item is never greater than 50", () => {
       const item = new Item("Aged Brie", 3, 50);
       items.push(item);
       update_quality();
@@ -144,23 +144,35 @@ describe("Gilded Rose", function() {
     });
       
 
-    it("Backstge passes increase in 'quality' as its sellIn value approaches", () => {
-      expect().toEqual("");
+    it("Backstage passes to a concert increase in 'quality' as its sellIn value approaches", () => {
+      const item = new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(21);
     });
 
 
-    it("quality increases by 2 when there 10 days or less", () => {
-      expect().toEqual("");
+    it("Backstage passes to a concert quality increases by 2 when there are 10 days or less", () => {
+      const item = new Item('Backstage passes to a TAFKAL80ETC concert', 10, 20);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(22);
     });
 
 
-    it("quality increases by 3 when there 5 days or less", () => {
-      expect().toEqual("");
+    it("Backstage passes to a concert quality increases by 3 when there are 5 days or less", () => {
+      const item = new Item('Backstage passes to a TAFKAL80ETC concert', 5, 20);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(23);
     });
 
 
-    it("quality becomes 0 after the concert", () => {
-      expect().toEqual("");
+    it("Backstage passes to a concert quality becomes 0 after the concert", () => {
+      const item = new Item('Backstage passes to a TAFKAL80ETC concert', 0, 20);
+      items.push(item);
+      update_quality();
+      expect(item.quality).toEqual(0);
     });
   });
 });
