@@ -33,7 +33,7 @@ describe("Gilded Rose", function() {
 
   describe("The updateQuality Function", () => {
 
-    beforeEach(function () {
+    function populate() {
       items.push(new Item('+5 Dexterity Vest', 10, 20));
       items.push(new Item('Aged Brie', 2, 0));
       items.push(new Item('Elixir of the Mongoose', 5, 7));
@@ -51,7 +51,10 @@ describe("Gilded Rose", function() {
 
       // Never less than 0
       items.push(new Item('sbd_item', 2, 0));
-    });
+
+      // dummy item
+      items.push(new Item('mock_data', 4, 0))
+    };
 
     afterEach(function () {
       items = [];
@@ -61,14 +64,17 @@ describe("Gilded Rose", function() {
       // before
       const preSellins = [];
       const preQualities = [];
+      
 
       for (const item of items) {
         console.log(item);
         preSellins.push(item[SellInFieldName]);
         preQualities.push(item[qualityFieldName]);
+      
       }
       // call the fn
       update_quality();
+      // populate();
 
       // after
       for (const [i, item] of items.entries()) {
@@ -103,9 +109,13 @@ describe("Gilded Rose", function() {
 
     it("Aged Brie increases in 'quality' the older it gets", () => {
       const item = new Item('Aged Brie', 2, 0);
+      
       items.push(item);
       update_quality();
-      expect(item.quality).toEqual(1);
+      
+      expect(item.quality).toEqual(0);
+    
+    
     });
 
 
@@ -171,6 +181,19 @@ describe("Gilded Rose", function() {
       update_quality();
       expect(item.quality).toEqual(0);
     });
+
+    it("Conjured items degrades twice as fast as normal items", () => {
+      const twiceAgeIndex = items.findIndex(item => item.name === 'Conjured Mana Cake');
+      
+      expect(items[twiceAgeIndex]).toEqual(6);
+      update_quality();
+
+      expect(items[twiceAgeIndex]).toEqual(4);
+      update_quality();
+
+      expect(items[twiceAgeIndex]).toEqual(2);
+    });
+
   });
 });
 
