@@ -139,7 +139,7 @@ describe("Gilded Rose", function() {
     });
 
     it("Sulfuras is a legendary item and never decreases in quality", () => {
-      const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80); // this looks like a bug as quality isn't supposed to decrease for legendary items
+      const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80); // this looks like a bug as sellin isn't supposed to change for legendary items
       update_quality();
       expect(item.quality).toEqual(80);
     });
