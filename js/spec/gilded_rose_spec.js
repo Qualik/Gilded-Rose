@@ -95,9 +95,7 @@ describe("Gilded Rose", function() {
 
     it("quality of an item is never negative", () => {
       // 'sbd_item'
-
       const sbd_itemIndex = items.findIndex(item => item.name === 'sbd_item');
-      expect(items[sbd_itemIndex].quality).toEqual(0);
       update_quality();
       expect(items[sbd_itemIndex].quality).toEqual(0);
     });
@@ -113,7 +111,6 @@ describe("Gilded Rose", function() {
 
     it("quality of an item is never greater than 50", () => {
       const item = new Item("Aged Brie", 3, 50);
-      items.push(item);
       update_quality();
       expect(item.quality).toEqual(50);
     });
