@@ -1,4 +1,4 @@
-describe("Gilded Rose", function () {
+describe("Gilded Rose", function() {
 
   const SellInFieldName = 'sell_in';
   const qualityFieldName = 'quality';
@@ -120,10 +120,30 @@ describe("Gilded Rose", function () {
     });
 
 
-    it("Sulfuras is a legendary item and never has to be sold or decreases in quality", () => {
-      expect(items).toEqual("");
+    it("Sulfuras is a legendary item and never has to be sold", () => {
+      const item = new Item('Sulfuras, Hand of Ragnaros', 0, 80);
+      update_quality();
+      expect(item.sell_in).toEqual(0);
     });
 
+    it("Sulfuras is a legendary item and never decreases in quality", () => {
+      const item = new Item('Sulfuras, Hand of Ragnaros', 0, 80);
+      update_quality();
+      expect(item.quality).toEqual(80);
+    });
+
+    it("Sulfuras is a legendary item and never has to be sold", () => {
+      const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80);
+      update_quality();
+      expect(item.sell_in).toEqual(-1);
+    });
+
+    it("Sulfuras is a legendary item and never decreases in quality", () => {
+      const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80); // this looks like a bug as quality isn't supposed to decrease for legendary items
+      update_quality();
+      expect(item.quality).toEqual(80);
+    });
+      
 
     it("Backstge passes increase in 'quality' as its sellIn value approaches", () => {
       expect().toEqual("");
