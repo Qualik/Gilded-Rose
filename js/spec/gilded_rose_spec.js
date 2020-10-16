@@ -52,8 +52,9 @@ describe("Gilded Rose", function() {
       // Never less than 0
       items.push(new Item('sbd_item', 2, 0));
 
-      // dummy item
-      items.push(new Item('mock_data', 4, 0))
+      //mock data
+      items.push(new Item('mock_data', 2, 4));
+
     };
 
     afterEach(function () {
@@ -74,7 +75,7 @@ describe("Gilded Rose", function() {
       }
       // call the fn
       update_quality();
-      // populate();
+      
 
       // after
       for (const [i, item] of items.entries()) {
@@ -83,117 +84,203 @@ describe("Gilded Rose", function() {
         expect(item[SellInFieldName]).toEqual(preSellins[i] - 1);
         expect(item[qualityFieldName]).toEqual(preQualities[i] - 1);
       }
+
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+      populate();
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Quality degrades twice as fast when sell by date has passed", () => {
-      const twiceAgeIndex = items.findIndex(item => item.name === 'twice decay');
-    
-      expect(items[twiceAgeIndex]).toEqual(4);
+      const twiceDecayItem = new Item('twice decay', 0, 4);
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(twiceDecayItem);
+      items.push(dummyData);
+      
+      
+      expect(dummyData.name).toEqual('mock_data');
+      populate();
+
+      expect(twiceDecayItem.quality).toEqual(4);
       update_quality();
 
-      expect(items[twiceAgeIndex]).toEqual(2);
+      expect(twiceDecayItem.quality).toEqual(2);
       update_quality();
 
-      expect(items[twiceAgeIndex]).toEqual(0);
+      expect(twiceDecayItem.quality).toEqual(0);
     });
 
 
     it("quality of an item is never negative", () => {
       // 'sbd_item'
       const sbd_itemIndex = items.findIndex(item => item.name === 'sbd_item');
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(items[sbd_itemIndex].quality).toEqual(0);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Aged Brie increases in 'quality' the older it gets", () => {
       const item = new Item('Aged Brie', 2, 0);
+      const dummyData = new Item('mock_data', 2, 4);
       
+      items.push(dummyData);
       items.push(item);
+
       update_quality();
-      
+      populate();
+
       expect(item.quality).toEqual(0);
-    
+      expect(dummyData.name).toEqual('mock_data');
     
     });
 
-
     it("quality of an item is never greater than 50", () => {
       const item = new Item("Aged Brie", 3, 50);
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(50);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Sulfuras is a legendary item and never has to be sold", () => {
       const item = new Item('Sulfuras, Hand of Ragnaros', 0, 80);
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.sell_in).toEqual(0);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
     it("Sulfuras is a legendary item and never decreases in quality", () => {
       const item = new Item('Sulfuras, Hand of Ragnaros', 0, 80);
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(80);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
     it("Sulfuras is a legendary item and never has to be sold", () => {
       const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80);
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.sell_in).toEqual(-1);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
     it("Sulfuras is a legendary item and never decreases in quality", () => {
       const item = new Item('Sulfuras, Hand of Ragnaros', -1, 80); // this looks like a bug as sellin isn't supposed to change for legendary items
+      const dummyData = new Item('mock_data', 2, 4);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+      
       expect(item.quality).toEqual(80);
+      expect(dummyData.name).toEqual('mock_data');
     });
       
 
     it("Backstage passes to a concert increase in 'quality' as its sellIn value approaches", () => {
       const item = new Item('Backstage passes to a TAFKAL80ETC concert', 15, 20);
+      const dummyData = new Item('mock_data', 2, 4);
+
       items.push(item);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(21);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Backstage passes to a concert quality increases by 2 when there are 10 days or less", () => {
       const item = new Item('Backstage passes to a TAFKAL80ETC concert', 10, 20);
+      const dummyData = new Item('mock_data', 2, 4);
+
       items.push(item);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(22);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Backstage passes to a concert quality increases by 3 when there are 5 days or less", () => {
       const item = new Item('Backstage passes to a TAFKAL80ETC concert', 5, 20);
+      const dummyData = new Item('mock_data', 2, 4);
+
       items.push(item);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(23);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
 
     it("Backstage passes to a concert quality becomes 0 after the concert", () => {
       const item = new Item('Backstage passes to a TAFKAL80ETC concert', 0, 20);
+      const dummyData = new Item('mock_data', 2, 4);
+
       items.push(item);
+      items.push(dummyData);
+
       update_quality();
+      populate();
+
       expect(item.quality).toEqual(0);
+      expect(dummyData.name).toEqual('mock_data');
     });
 
     it("Conjured items degrades twice as fast as normal items", () => {
-      const twiceAgeIndex = items.findIndex(item => item.name === 'Conjured Mana Cake');
+      const twiceDecayItem = new Item('Conjured Mana Cake', 3, 6);
+      const dummyData = new Item('mock_data', 2, 4);
+
+      items.push(twiceDecayItem);
+      items.push(dummyData);
       
-      expect(items[twiceAgeIndex]).toEqual(6);
+      
+      expect(dummyData.name).toEqual('mock_data');
+      populate();
+      
+      expect(twiceDecayItem.quality).toEqual(6);
       update_quality();
 
-      expect(items[twiceAgeIndex]).toEqual(4);
+      expect(twiceDecayItem.quality).toEqual(4);
       update_quality();
 
-      expect(items[twiceAgeIndex]).toEqual(2);
+      expect(twiceDecayItem.quality).toEqual(2);
     });
-
   });
 });
 

@@ -73,6 +73,10 @@ AgeMonitoredItem.prototype.ageItem = function () {
     stockItemAgeingDictionary.types[this.ageingType].ageingFn(this);
 };
 
+AgeMonitoredItem.prototype.eject = function () {
+    return new Item(this.name, this.sell_in, this.quality)
+};
+
 function update_quality() {
     for (let [i, item] of items.entries()) {
 
