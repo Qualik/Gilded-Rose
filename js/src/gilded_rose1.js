@@ -6,6 +6,11 @@ function Item(name, sell_in, quality) {
 
 var items = []
 
+// I put this in to show that it won't get overwritten
+Item.prototype.report = function report() {
+    return `${this.name} (Quality: ${this.name}) needs to be sold in ${this.sell_in} days`;
+};
+
 const DEFAULT_TYPE_STRING = "default";
 
 const stockItemAgeingDictionary = {
