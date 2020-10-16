@@ -23,11 +23,20 @@
 - Refactor the code but do not alter the items class or property
 - Add a new feature 'conjured items' for a new category of items to the system
 
-## Things to consider
+## My Notes
 
 The idea here is that things lower in quality the more they age which is not correct as different types of items age differently.
 
-Need to find a way or some sort of dictionary to check the rules for each item so I can conduct a search or look-up and then age the item accordingly when I run updateQuality()
+Create some sort of dictionary to check the rules for each item so I can conduct a search or look-up and then age the item accordingly when I run updateQuality().
+
+Refactored the updateQuality() to check if the desired result is achieved.
+
+- Items[i] could be saved as ‘const item = items[i]
+- Lots of ‘!=’ should be ‘!==’ in the source code
+- Source code is difficult to read
+- Will need lots of conditions to maintain this code
+- ‘Sellin_value’ for ‘Sulfuras’ wasn’t supposed to change according to the rules but is listed with a ‘-1’ (think this is a bug).
+- Also created a populate() function which I can use to test against a set of dummy data that matches what is required. This is to also show that there are no issues when running tests with using mock data.
 
 ## Guidance Notes
 
