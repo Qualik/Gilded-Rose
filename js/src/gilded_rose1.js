@@ -82,6 +82,11 @@ AgeMonitoredItem.prototype.eject = function () {
     return new Item(this.name, this.sell_in, this.quality)
 };
 
+
+/****************************************
+Refactored update_quality() function
+*****************************************/
+
 function update_quality() {
     for (let [i, item] of items.entries()) {
 
